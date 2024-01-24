@@ -13,7 +13,25 @@
         .fieldError{
             color: red;
         }
+        .col-md-4{
+            margin: 10px auto;
+            width: 50%;
+        }
+
     </style>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        function setImage(event) {
+            var reader = new FileReader();
+
+            reader.onload = (e) => {
+                document.getElementById("image").src =e.target.result;
+            };
+            reader.readAsDataURL(event.files[0]);
+        };
+    </script>
 </th:block>
 
 <div layout:fragment="content">
@@ -39,7 +57,14 @@
             <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력해주세요">
             <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError">Incorrect data</p>
         </div>
-
+        <div class="row g-2" style="width: 50%; margin: 20px auto">
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem; height: 18rem">
+                    <img id="image" class="card-img-top" style="width: 100%; height: 100%">
+                    <input type="file" class="form-control"  onchange="setImage(e)">
+                </div>
+            </div>
+        </div>
 
         <div style="text-align: center">
             <button type="submit" class="btn btn-primary" style="">회원가입</button>

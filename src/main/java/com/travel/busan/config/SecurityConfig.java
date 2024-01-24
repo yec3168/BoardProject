@@ -26,19 +26,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.formLogin(form -> form
-                .loginPage("/member/login")
+                .loginPage("/members/login")
                 .defaultSuccessUrl("/") //로그인 성공시
                 .usernameParameter("email") // 로그인시 사용할 파라미터 email로 설정.
-                .failureUrl("/member/login/error") // 실패시 url
+                .failureUrl("/members/login/error") // 실패시 url
         );
 
         http.logout(form -> form
-                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/")
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.travel.busan.controller;
 import com.travel.busan.dto.MemberFormDto;
 import com.travel.busan.entity.Member;
 import com.travel.busan.repository.MemberRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class MemberController {
 
     // 회원가입 post
     @PostMapping("/new")
-    public String signUpForm(MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
+    public String signUpForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors())
             return "member/MemberForm";
 
