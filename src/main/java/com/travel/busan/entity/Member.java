@@ -32,6 +32,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleStatus roleStatus;
 
+    private String address;
+
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
@@ -40,6 +42,7 @@ public class Member {
         member.setPassword(password);
         member.setName(memberFormDto.getName());
         member.setNickname(memberFormDto.getNickname());
+        member.setAddress(memberFormDto.getAddress());
         member.setRoleStatus(RoleStatus.ADMIN);
         return member;
     }

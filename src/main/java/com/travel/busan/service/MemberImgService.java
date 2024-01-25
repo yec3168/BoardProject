@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -24,16 +25,17 @@ public class MemberImgService {
     private String uploadImage;
 
 
-    public void upload(MemberImgDto memberImgDto, String email){
-        Member member = memberRepository.findByEmail(email);
-
-        if(member == null){
-            throw new UsernameNotFoundException("존재하지 않는 회원입니다.");
-        }
-
+    public void upload(MemberImg memberImg, MultipartFile multipartFile){
+        // 파일 이름, url 재설정.
         UUID uuid = UUID.randomUUID();
+        String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
+        String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
 
+        String saveUrl = uploadImage+"/"+oriFileNm;
 
+        //상품 이미지 저장.
+        memberImg.updateImg(saveFileNm, saveUrl);
+        memberImgRepository.save(memberImg);
     }
 
 }

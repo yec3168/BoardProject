@@ -20,8 +20,6 @@ public class MemberImg {
 
     private String fileName;
 
-    private String originName;
-
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -29,9 +27,8 @@ public class MemberImg {
     private Member member;
 
     // Image update
-    public void updateImg(String fileName, String originName, String url){
+    public void updateImg(String fileName, String url){
         this.fileName = fileName;
-        this.originName =originName;
         this.url = url;
     }
 

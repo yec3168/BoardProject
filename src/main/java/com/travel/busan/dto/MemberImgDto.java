@@ -5,5 +5,7 @@ import lombok.Data;
 @Data
 public class MemberImgDto {
 
+    private String fileName;
 
+    private String url;
 }
