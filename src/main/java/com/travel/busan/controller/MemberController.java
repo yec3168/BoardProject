@@ -60,6 +60,7 @@ public class MemberController {
         return "redirect:/";
     }
 
+    //login Mapping
     @GetMapping("/login")
     public String loginForm(Model model){
         return "member/MemberLogin";
@@ -72,5 +73,10 @@ public class MemberController {
 
 
 
+    //memberInfo mapping
+    @GetMapping("/memberInfo")
+    public String infoView(){
+        return "member/MemberInfo";
+    }
 
 }
