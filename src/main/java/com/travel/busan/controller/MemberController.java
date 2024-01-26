@@ -1,25 +1,20 @@
 package com.travel.busan.controller;
 
 import com.travel.busan.dto.MemberFormDto;
-import com.travel.busan.dto.MemberImgDto;
 import com.travel.busan.entity.Member;
 import com.travel.busan.entity.MemberImg;
-import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
 import com.travel.busan.service.MemberImgService;
+import com.travel.busan.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import static java.rmi.server.LogStream.log;
 
 @Controller
 @RequestMapping("/members")
@@ -27,6 +22,9 @@ public class MemberController {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private MemberImgService memberImgService;
@@ -43,18 +41,21 @@ public class MemberController {
 
     // 회원가입 post
     @PostMapping("/new")
-    public String signUpForm(@Valid MemberFormDto memberFormDto, @RequestParam("memberImgFile") MultipartFile multipartFile,
-                             BindingResult bindingResult, Model model){
+    public String signUpForm(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult ,@RequestParam("memberImgFile") MultipartFile multipartFile,
+                              Model model){
 
         if(bindingResult.hasErrors())
             return "member/MemberForm";
 
+
         try{
             Member member = Member.createMember(memberFormDto, passwordEncoder);
-            memberRepository.save(member);
-            //이미지 저장을 위한 memberImgService.upload 호출.
-            memberImgService.upload(new MemberImg(),multipartFile);
-
+            Member saveMember = memberService.save(member);
+            if(saveMember != null)
+                //이미지 저장을 위한 memberImgService.upload 호출.
+                memberImgService.upload(new MemberImg(),multipartFile, saveMember);
+            else
+                return "member/MemberForm";
         }catch (IllegalStateException e){
             model.addAttribute("errorMessage", e.getMessage());
             return "member/MemberForm";
@@ -72,6 +73,8 @@ public class MemberController {
         model.addAttribute("loginErrorMsg", "아이디가 존재하지 않습니다.");
         return "member/MemberLogin";
     }
+
+
 
 
 }

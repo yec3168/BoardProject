@@ -25,7 +25,7 @@ public class MemberImgService {
     private String uploadImage;
 
 
-    public void upload(MemberImg memberImg, MultipartFile multipartFile){
+    public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
         // 파일 이름, url 재설정.
         UUID uuid = UUID.randomUUID();
         String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
@@ -35,6 +35,8 @@ public class MemberImgService {
 
         //상품 이미지 저장.
         memberImg.updateImg(saveFileNm, saveUrl);
+        memberImg.setMember(saveMember);
+
         memberImgRepository.save(memberImg);
     }
 

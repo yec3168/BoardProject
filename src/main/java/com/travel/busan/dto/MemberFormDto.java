@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class MemberFormDto {
+
     @NotBlank(message = "이메일은 필수 입력값입니다.")
     private String email;
 
@@ -22,5 +23,4 @@ public class MemberFormDto {
     @NotBlank(message = "주소는 필수 입력값입니다.")
     private String address;
 
-    private MemberImgDto memberImgDto = new MemberImgDto();
 }
