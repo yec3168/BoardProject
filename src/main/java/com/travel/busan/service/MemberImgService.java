@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.UUID;
 
 @Service
@@ -24,6 +26,9 @@ public class MemberImgService {
     @Value("${imgSave.location}")
     private String uploadImage;
 
+    @Autowired
+    private FileServie fileServie;
+
 
     public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
         // 파일 이름, url 재설정.
@@ -36,13 +41,21 @@ public class MemberImgService {
         }
         String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
 
-        String saveUrl = uploadImage+"/"+oriFileNm;
+        String saveUrl = uploadImage+"/"+saveFileNm;
 
         //상품 이미지 저장.
         memberImg.updateImg(saveFileNm, saveUrl);
         memberImg.setMember(saveMember);
-
         memberImgRepository.save(memberImg);
+
+        //파일저장
+        try{
+            fileServie.uploadFile(saveUrl, saveFileNm, multipartFile);
+        }catch (Exception e){
+            throw new IllegalStateException("파일을 저장하지 못했습니다.");
+        }
+
+
     }
 
 }
