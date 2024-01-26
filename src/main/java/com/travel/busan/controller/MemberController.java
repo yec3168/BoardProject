@@ -47,15 +47,11 @@ public class MemberController {
         if(bindingResult.hasErrors())
             return "member/MemberForm";
 
-
         try{
             Member member = Member.createMember(memberFormDto, passwordEncoder);
             Member saveMember = memberService.save(member);
-            if(saveMember != null)
                 //이미지 저장을 위한 memberImgService.upload 호출.
-                memberImgService.upload(new MemberImg(),multipartFile, saveMember);
-            else
-                return "member/MemberForm";
+            memberImgService.upload(new MemberImg(),multipartFile, saveMember);;
         }catch (IllegalStateException e){
             model.addAttribute("errorMessage", e.getMessage());
             return "member/MemberForm";

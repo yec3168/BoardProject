@@ -29,6 +29,11 @@ public class MemberImgService {
         // 파일 이름, url 재설정.
         UUID uuid = UUID.randomUUID();
         String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
+        if(oriFileNm.isEmpty()) {
+            memberImg.setMember(saveMember);
+            memberImgRepository.save(memberImg);
+            return;
+        }
         String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
 
         String saveUrl = uploadImage+"/"+oriFileNm;
