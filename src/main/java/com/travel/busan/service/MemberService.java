@@ -30,6 +30,10 @@ public class MemberService implements UserDetailsService {
        return memberRepository.save(member);
     }
 
+    public Member memberView(Long id){
+        return memberRepository.findById(id).get();
+    }
+
     // 로그인시 이메일 매핑.
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

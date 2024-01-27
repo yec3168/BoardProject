@@ -28,7 +28,9 @@
             <label th:for="password">비밀번호</label>
             <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요">
         </div>
-        <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
+        <div class="form-group">
+            <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
+        </div>
         <div style="text-align: center">
             <button class="btn btn-primary" style="">로그인</button>
             <button type="button" class="btn btn-primary" onclick="location.href='/members/new'">회원가입</button>

@@ -3,17 +3,26 @@ package com.travel.busan.controller;
 import com.travel.busan.dto.MemberFormDto;
 import com.travel.busan.entity.Member;
 import com.travel.busan.entity.MemberImg;
+import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
 import com.travel.busan.service.MemberImgService;
 import com.travel.busan.service.MemberService;
 import jakarta.validation.Valid;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
 
 
 @Controller
@@ -25,6 +34,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private MemberImgRepository memberImgRepository;
 
     @Autowired
     private MemberImgService memberImgService;
@@ -67,7 +79,7 @@ public class MemberController {
     }
     @GetMapping("/login/error")
     public String loginError(Model model){
-        model.addAttribute("loginErrorMsg", "아이디가 존재하지 않습니다.");
+        model.addAttribute("loginErrorMsg", "아이디 혹은 비밀번호가 틀렸습니다.");
         return "member/MemberLogin";
     }
 
@@ -75,8 +87,26 @@ public class MemberController {
 
     //memberInfo mapping
     @GetMapping("/memberInfo")
-    public String infoView(){
-        return "member/MemberInfo";
+
+    public String infoView(@AuthenticationPrincipal Member member,Model model) throws Exception{
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails)principal;
+
+        String email = ((UserDetails) principal).getUsername();
+
+        Member findMember = memberRepository.findByEmail(email);
+
+        if(findMember != null){
+            MemberImg findMemberImg = memberImgRepository.findByMember(findMember);
+            model.addAttribute("member", findMember);
+            model.addAttribute("memberImg", findMemberImg);
+
+            return "member/MemberInfo";
+        }
+        else{
+            model.addAttribute("errorMessage", "불러 올 수 없습니다.");
+            return "redirect:/";
+        }
     }
 
 }

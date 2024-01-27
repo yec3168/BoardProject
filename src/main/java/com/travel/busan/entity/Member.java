@@ -7,7 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -48,4 +52,6 @@ public class Member {
         member.setRoleStatus(RoleStatus.ADMIN);
         return member;
     }
+
+
 }
