@@ -12,8 +12,13 @@ import java.io.FileOutputStream;
 @Log
 public class FileServie {
 
-    public void uploadFile(String uploadPath, String fileName, MultipartFile multipartFile) throws Exception {
-        FileOutputStream fos = new FileOutputStream(uploadPath);
+    public void uploadFile(MultipartFile multipartFile, String checkFolder, String uploadUrl) throws Exception {
+        File file = new File(checkFolder);
+        if(!file.exists()){
+            file.mkdir();
+            System.out.println("파일을 생성하였습니다.");
+        }
+        FileOutputStream fos = new FileOutputStream(uploadUrl);
         fos.write(multipartFile.getBytes());
         fos.close();
     }
@@ -28,4 +33,7 @@ public class FileServie {
         else
             log.info("파일이 존재하지 않습니다.");
     }
+
+
+
 }
