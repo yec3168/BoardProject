@@ -23,7 +23,7 @@
 
                 reader.onload = (e) => {
                     console.log("이미지변경")
-                    document.getElementsByTagName("img").src =e.target.result
+                    document.getElementById("image").src =e.target.result
                 };
                 reader.readAsDataURL(event.files[0]);
             };
@@ -64,11 +64,11 @@
         <form th:action="@{/members/update/*{id}}" method="post" role="form" enctype="multipart/form-data">
             <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px;  border: 2px solid lightgrey; background-color: white">
                 <div class="col-4" style="width: 30%; border: 2px solid white">
-                    <img class="user-img" th:if="${memberImg.getUrl() ==null}" th:src="/img/user.png">
+                    <img class="user-img" th:if="${memberImg.getUrl() ==null}" th:src="@{/img/user.png}">
                     <img id="image" class="user-img" th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}">
 
                     <div style="margin-left: 50px">
-                        <input type="file" value="이미지 수정" onclick="setImage(this)"></input>
+                        <input type="file" value="이미지 수정" onchange="setImage(this)"></input>
                         <input type="button" th:if="${memberImg.getUrl() !=null}" value="이미지 삭제" onclick="initImage()"></input>
                     </div>
                 </div>
