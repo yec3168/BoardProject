@@ -111,4 +111,9 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/update")
+    public String memberUpdateInfo(Model model){
+        model.addAttribute("member", new Member());
+        return "member/MemberUpdateForm";
+    }
 }
