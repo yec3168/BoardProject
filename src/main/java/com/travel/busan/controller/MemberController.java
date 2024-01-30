@@ -111,9 +111,12 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/update")
-    public String memberUpdateInfo(Model model){
-        model.addAttribute("member", new Member());
+    @GetMapping("/update/{id}")
+    public String memberUpdateInfo(@PathVariable("id")Long id, Model model){
+        Member findMember = memberService.memberView(id);
+        MemberImg memberImg = memberImgRepository.findByMember(findMember);
+        model.addAttribute("member", findMember);
+        model.addAttribute("memberImg", memberImg);
         return "member/MemberUpdateForm";
     }
 }
