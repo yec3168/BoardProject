@@ -89,7 +89,7 @@
 <body th:object="${member}" style="background-color: snow">
 <div class="container-fluid" >
     <div class="row flex-nowrap" >
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 " style="background-color: grey">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 " style="background-color: grey; position: fixed">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                 <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-black text-decoration-none">
                     <span class="fs-5 d-none d-sm-inline">Menu</span>
@@ -139,7 +139,7 @@
 
                 </div>
 
-                <div class="dropdown pb-4">
+                <div class="dropdown pb-4" >
                     <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img  th:if="${memberImg.getUrl() ==null}" th:src="/image/default.jpg" width="30" height="30" class="rounded-circle">
                         <img  th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}" width="30" height="30" class="rounded-circle">
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <div class="col py-3" style="margin-top: 50px; margin-left: 30px;">
+        <div class="col py-3" style="margin-top: 50px; margin-left: 30px; margin-left: 300px">
             <h3 th:text="|*{name} Profile|"></h3>
             <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px; height: 40%; border: 2px solid white; background-color: white">
                 <div class="col-4" style="width: 30%; height: 100%; border: 2px solid white">
