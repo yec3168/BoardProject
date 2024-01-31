@@ -7,6 +7,7 @@ import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
 import com.travel.busan.service.MemberImgService;
 import com.travel.busan.service.MemberService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,6 @@ public class MemberController {
 
     //memberInfo mapping
     @GetMapping("/memberInfo")
-
     public String infoView(@AuthenticationPrincipal Member member,Model model) throws Exception{
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails)principal;
@@ -112,11 +112,28 @@ public class MemberController {
     }
 
     @GetMapping("/update/{id}")
-    public String memberUpdateInfo(@PathVariable("id")Long id, Model model){
+    public String memberUpdateForm(@PathVariable("id")Long id, Model model){
         Member findMember = memberService.memberView(id);
         MemberImg memberImg = memberImgRepository.findByMember(findMember);
         model.addAttribute("member", findMember);
         model.addAttribute("memberImg", memberImg);
         return "member/MemberUpdateForm";
+    }
+
+    @PostMapping("/update/{id}")
+    public String memberUpdatePost(@PathVariable("id")Long id, @Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult, Model model) throws Exception{
+        if(bindingResult.hasErrors()){
+            return "member/MemberUpdateForm";
+        }
+
+        try{
+            memberService.updateMember(memberFormDto); //내용 수정.
+
+        }catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/MemberUpdateForm";
+        }
+
+        return "member/MemberInfo";
     }
 }

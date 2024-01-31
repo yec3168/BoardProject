@@ -5,6 +5,7 @@ import com.travel.busan.entity.Member;
 import com.travel.busan.entity.MemberImg;
 import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,7 @@ public class MemberImgService {
     @Autowired
     private FileServie fileServie;
 
-
+    @Transactional
     public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
         // 파일 이름, url 재설정.
         UUID uuid = UUID.randomUUID();
@@ -49,7 +50,7 @@ public class MemberImgService {
 
 
         //상품 이미지 저장.
-        memberImg.updateImg(saveFileNm, saveUrl);
+        memberImg. updateImg(saveFileNm, saveUrl);
         memberImg.setMember(saveMember);
         memberImgRepository.save(memberImg);
 

@@ -1,5 +1,6 @@
 package com.travel.busan.service;
 
+import com.travel.busan.dto.MemberFormDto;
 import com.travel.busan.entity.Member;
 import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
@@ -11,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +26,29 @@ public class MemberService implements UserDetailsService {
     @Autowired
     public MemberImgRepository memberImgRepository;
 
+
     public Member save(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
         if(findMember != null)
             throw new IllegalStateException("이미 존재하는 회원입니다.");
 
        return memberRepository.save(member);
+    }
+
+    public void updateMember(MemberFormDto memberFormDto){
+        Optional<Member> om = memberRepository.findById(memberFormDto.getId());
+
+        if(om.isPresent()){
+            Member findMember = om.get();
+            //내용 update
+            findMember.updateMember(memberFormDto.getName(), memberFormDto.getNickname(), memberFormDto. getAddress());
+            memberRepository.save(findMember);
+
+        }
+        else{
+            throw new IllegalStateException("존재하지 않는 회원입니다.");
+        }
+
     }
 
     public Member memberView(Long id){

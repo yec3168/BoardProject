@@ -8,4 +8,6 @@ public class MemberImgDto {
     private String fileName;
 
     private String url;
+
+
 }
