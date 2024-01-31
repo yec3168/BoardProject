@@ -29,11 +29,9 @@
                 reader.onload = (e) => {
                     console.log("이미지변경")
                     if (result.namedItem("image") !=null) {
-                        console.log("ㄷㅁㅁㄴㅇ");
                         document.getElementById("image").src = e.target.result
                     }
                     else if(result.namedItem("image2") !=null) {
-                        console.log("들")
                         document.getElementById("image2").src = e.target.result
                     }
                 };
@@ -45,7 +43,7 @@
             };
 
             $(document).ready(function(){
-                let errorMessage = [[${errorMessage}]];
+                let errorMessage = [[${errorMessage}]]
                 if(errorMessage != null){
                     alert(errorMessage);
                     history.back();
@@ -53,7 +51,8 @@
             });
 
             function showAlert(){
-                alert("수정되었습니다.")
+                let resultMessage = [[${resultMessage}]];
+                alert(resultMessage)
             }
         </script>
     </th:block>
@@ -90,11 +89,28 @@
                 </div>
                 <div class="col-8" style="width: 70%">
                     <div class="info" style="margin: 10px auto">
+                        <div class="row">
+                            <div class="dust-class" style="width: 100%">
+                                <label th:for="email"><span>* </span>이메일</label>
+                                <input type="text" class="txt-input" th:field="*{email}" >
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="dust-class" style="width: 100%">
+                                <label th:for="password"><span>* </span>비밀번호</label>
+                                <input type="text" class="txt-input" th:field="*{password}" >
+                                <div th:if="${not #fields.hasErrors('password')}" class="form-text">
+                                    비밀번호는 8~20자로 설정해주세요.
+                                </div>
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+                            </div>
+                        </div>
                         <div class="row" >
                             <div class="dust-class">
-                                <label th:for=name><span>* </span>아이디</label>
+                                <label th:for=name><span>* </span>이름</label>
                                 <input type="text" class="txt-input" th:field="*{name}">
-                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
+                                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
                             </div>
                             <div class="dust-class">
                                 <label th:for="nickname"><span>* </span>닉네임</label>
@@ -102,13 +118,7 @@
                                 <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError">Incorrect data</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="dust-class" style="width: 100%">
-                                <label th:for="email"><span>* </span>이메일</label>
-                                <input type="text" class="txt-input" th:field="*{email}" disabled>
-                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="dust-class" style="width: 100%">
                                 <label th:for="address"><span>* </span>주소</label>
@@ -116,13 +126,7 @@
                                 <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="dust-class" style="width: 100%">
-                                <label th:for="password"><span>* </span>비밀번호</label>
-                                <input type="password" class="txt-input" th:field="*{password}" disabled>
-                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
+
 
                         <div style="float:right;">
                             <button type="submit" class="btn btn-outline-danger" onclick="showAlert()" >수정 완료</button>

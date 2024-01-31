@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 
 @Service
 @Log
-public class FileServie {
+public class FileService {
 
     @Transactional
     public void uploadFile(MultipartFile multipartFile, String checkFolder, String uploadUrl) throws Exception {

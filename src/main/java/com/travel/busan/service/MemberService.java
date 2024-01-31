@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -41,7 +40,8 @@ public class MemberService implements UserDetailsService {
         if(om.isPresent()){
             Member findMember = om.get();
             //내용 update
-            findMember.updateMember(memberFormDto.getName(), memberFormDto.getNickname(), memberFormDto. getAddress());
+
+            findMember.updateMember(memberFormDto.getEmail(), memberFormDto.getPassword(),memberFormDto.getName(), memberFormDto.getNickname(), memberFormDto. getAddress());
             memberRepository.save(findMember);
 
         }

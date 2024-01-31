@@ -52,7 +52,9 @@ public class Member {
         member.setRoleStatus(RoleStatus.ADMIN);
         return member;
     }
-    public void updateMember(String name, String nickname, String address){
+    public void updateMember(String email, String password, String name, String nickname, String address){
+        this.email = email;
+        this.password =password;
         this.name =name;
         this.nickname = nickname;
         this.address = address;

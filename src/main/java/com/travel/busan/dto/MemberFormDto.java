@@ -13,7 +13,6 @@ public class MemberFormDto {
     private String email;
 
     @NotBlank(message = "비밀번호 필수 입력값입니다.")
-    @Size(min = 8, max = 20)
     private String password;
 
     @NotBlank(message = "이름은 필수 입력값입니다.")
@@ -24,6 +23,5 @@ public class MemberFormDto {
 
     @NotBlank(message = "주소는 필수 입력값입니다.")
     private String address;
-
 
 }

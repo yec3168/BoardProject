@@ -123,10 +123,12 @@ public class MemberController {
     @PostMapping("/update/{id}")
     public String memberUpdatePost(@PathVariable("id")Long id, @Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult, Model model) throws Exception{
         if(bindingResult.hasErrors()){
+            model.addAttribute("resultMessage", "수정 실패하였습니다.");
             return "member/MemberUpdateForm";
         }
 
         try{
+            System.out.println("파일수정을 시작합니다.");
             memberService.updateMember(memberFormDto); //내용 수정.
 
         }catch (IllegalStateException e){
@@ -134,6 +136,7 @@ public class MemberController {
             return "member/MemberUpdateForm";
         }
 
-        return "member/MemberInfo";
+        model.addAttribute("resultMessage", "수정되었습니다..");
+        return "redirect:/";
     }
 }

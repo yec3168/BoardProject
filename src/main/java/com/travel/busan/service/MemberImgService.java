@@ -1,6 +1,5 @@
 package com.travel.busan.service;
 
-import com.travel.busan.dto.MemberImgDto;
 import com.travel.busan.entity.Member;
 import com.travel.busan.entity.MemberImg;
 import com.travel.busan.repository.MemberImgRepository;
@@ -8,13 +7,9 @@ import com.travel.busan.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.UUID;
 
 @Service
@@ -29,7 +24,7 @@ public class MemberImgService {
     private String uploadImage;
 
     @Autowired
-    private FileServie fileServie;
+    private FileService fileService;
 
     @Transactional
     public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
@@ -56,7 +51,7 @@ public class MemberImgService {
 
         //파일저장
         try{
-            fileServie.uploadFile(multipartFile, checkFolder, uploadUrl);
+            fileService.uploadFile(multipartFile, checkFolder, uploadUrl);
         }catch (Exception e){
             throw new IllegalStateException("파일을 저장하지 못했습니다.");
         }
