@@ -38,7 +38,14 @@
                 reader.readAsDataURL(event.files[0]);
             };
             function initImage() {
-                document.getElementById("image").src ="/img/user.png";
+                let result = document.getElementsByTagName("img");
+
+                if (result.namedItem("image") !=null) {
+                    document.getElementById("image").src = "/img/user.png";
+                }
+                else if(result.namedItem("image2") !=null) {
+                    document.getElementById("image2").src ="/img/user.png";
+                }
                 alert("이미지가 삭제되었습니다.");
             };
 
@@ -64,72 +71,93 @@
                 width: 300px;
                 height: 400px;
             }
+            .container{
+                margin-left: 350px;
+                margin-bottom: 100px;
 
+                border: 1px solid lightgrey;
+                box-shadow: 3px 3px 3px;
+            }
+            .fieldError{
+                color: red;
+            }
         </style>
     </th:block>
 
 </head>
 <body th:object="${memberFormDto}">
-    <div class="col py-3">
-        <form th:action="@{/members/update}" method="post" role="form" enctype="multipart/form-data">
-            <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px;  border: 2px solid lightgrey; background-color: white">
-                <div class="col-4" style="width: 30%; border: 2px solid white">
-                    <img id="image" class="user-img" th:if="${memberImg.getUrl() ==null}" th:src="@{/img/user.png}">
-                    <img id="image2" class="user-img" th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}">
+    <h1 style="margin-left: 350px; margin-top: 80px">회원정보 수정</h1>
+    <div class="container">
 
-                    <div style="margin-left: 50px">
-                        <input type="file" value="이미지 수정" onchange="setImage(this)"></input>
-                        <input type="button" th:if="${memberImg.getUrl() !=null}" th:field="${memberImg}" value="이미지 삭제" onclick="initImage()"></input>
-                    </div>
-                </div>
-                <div class="col-8" style="width: 70%">
-                    <div class="info" style="margin: 10px auto">
-                        <div class="row">
-                            <div class="dust-class" style="width: 100%">
-                                <label th:for="email"><span>* </span>이메일</label>
-                                <input type="text" class="txt-input" th:field="*{email}" >
-                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="dust-class" style="width: 100%">
-                                <label th:for="password"><span>* </span>비밀번호</label>
-                                <input type="text" class="txt-input" th:field="*{password}" >
-                                <div th:if="${not #fields.hasErrors('password')}" class="form-text">
-                                    비밀번호는 8~20자로 설정해주세요.
-                                </div>
-                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
-                        <div class="row" >
-                            <div class="dust-class">
-                                <label th:for=name><span>* </span>이름</label>
-                                <input type="text" class="txt-input" th:field="*{name}">
-                                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
-                            </div>
-                            <div class="dust-class">
-                                <label th:for="nickname"><span>* </span>닉네임</label>
-                                <input type="text" class="txt-input" th:field="*{nickname}">
-                                <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
+        <form th:action="@{/members/update/{id}(id=${memberFormDto.id})}" method="post" role="form" enctype="multipart/form-data">
 
-                        <div class="row">
-                            <div class="dust-class" style="width: 100%">
-                                <label th:for="address"><span>* </span>주소</label>
-                                <input type="text" class="txt-input" th:field="*{address}">
-                                <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
-                            </div>
-                        </div>
-
-
-                        <div style="float:right;">
-                            <button type="submit" class="btn btn-outline-danger">수정 완료</button>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="dust-class" style="width: 100%">
+                    <label th:for="email"><span>* </span>이메일</label>
+                    <input type="text" class="txt-input" th:field="*{email}" >
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="dust-class" style="width: 100%">
+                    <label th:for="password"><span>* </span>비밀번호</label>
+                    <input type="text" class="txt-input" th:field="*{password}" >
+                    <div th:if="${not #fields.hasErrors('password')}" class="form-text">
+                        비밀번호는 8~20자로 설정해주세요.
+                    </div>
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="dust-class">
+                    <label th:for=name><span>* </span>이름</label>
+                    <input type="text" class="txt-input" th:field="*{name}">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
+                </div>
+                <div class="dust-class">
+                    <label th:for="nickname"><span>* </span>닉네임</label>
+                    <input type="text" class="txt-input" th:field="*{nickname}">
+                    <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError">Incorrect data</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="dust-class" style="width: 100%">
+                    <label th:for="address"><span>* </span>주소</label>
+                    <input type="text" class="txt-input" th:field="*{address}">
+                    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-4" style="width: 30%; border: 2px solid white; margin-left: 100px">
+                    <img id="image" class="user-img" th:if="*{memberImg.getUrl() ==null}" th:src="@{/img/user.png}">
+                    <img id="image2" class="user-img" th:if="*{memberImg.getUrl() !=null}" th:src="@{${memberFormDto.memberImg.getUrl()}}">
+                </div>
+                <div  class="col-5" style="margin-left: 50px; margin-top: 100px">
+                    <div class="image-text" >
+                        <h4>파일을 선택해주세요.</h4>
+                        <p style="color:lightgrey;">JPG, JPEG, PNG 파일을 넣어주세요..</p>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input name="memberImgFile" type="file" class="form-control" onchange="setImage(this)">
+                        </div>
+                        <div class="col">
+                            <button  type="button" class="btn btn-outline-danger" th:if="${memberFormDto.memberImg.getUrl() !=null}" th:field="${memberImg}" value="이미지 삭제" onclick="initImage()">이미지 삭제</button>
+                        </div>
+                       </div>
+                </div>
+            </div>
+
+            <div style="text-align: right">
+                <button type="submit" class="btn btn-outline-danger" style="">수정완료</button>
+            </div>
+
         </form>
     </div>
+
 </body>
 </html>
+

@@ -49,8 +49,8 @@ public class MemberController {
 
     // 회원가입 post
     @PostMapping("/new")
-    public String signUpForm(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult ,@RequestParam("memberImgFile") MultipartFile multipartFile,
-                              Model model){
+    public String signUpForm(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult ,
+                             @RequestParam("memberImgFile") MultipartFile multipartFile, Model model){
 
         if(bindingResult.hasErrors())
             return "member/MemberForm";
@@ -111,19 +111,23 @@ public class MemberController {
         Member findMember = memberService.memberView(id);
         MemberFormDto findMemberFormDto = MemberFormDto.toDto(findMember);
         MemberImg memberImg = memberImgRepository.findByMember(findMember);
+
         model.addAttribute("memberFormDto", findMemberFormDto);
         model.addAttribute("memberImg", memberImg);
         return "member/MemberUpdateForm";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/update/{id}")
 
-    public String memberUpdatePost(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult, Model model) throws Exception{
+    public String memberUpdatePost(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult,
+                                   @RequestParam("memberImgFile") MultipartFile multipartFile ,Model model) throws Exception{
         if(bindingResult.hasErrors()){
             return "member/MemberUpdateForm";
         }
         try{
             System.out.println("파일수정을 시작합니다.");
+            memberImgService.updateImg(multipartFile, memberRepository.findByEmail(memberFormDto.getEmail()).getMemberImg());
+
             memberService.updateMember(memberFormDto); //내용 수정.
 
         }catch (IllegalStateException e){

@@ -29,23 +29,15 @@ public class MemberImgService {
     @Transactional
     public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
         // 파일 이름, url 재설정.
-        UUID uuid = UUID.randomUUID();
-        String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
-        if(oriFileNm.isEmpty()) {
-            memberImg.setMember(saveMember);
-            memberImgRepository.save(memberImg);
-            return;
-        }
-        String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
 
+        String saveFileNm = renameFile(multipartFile);
 
         String saveUrl = "/image/members"+"/"+saveFileNm; //db url
         String checkFolder = uploadImage +"/members"; //mk dir
         String uploadUrl = checkFolder+"/"+saveFileNm; //file save
 
-
         //상품 이미지 저장.
-        memberImg. updateImg(saveFileNm, saveUrl);
+        memberImg.updateImg(saveFileNm, saveUrl);
         memberImg.setMember(saveMember);
         memberImgRepository.save(memberImg);
 
@@ -55,8 +47,38 @@ public class MemberImgService {
         }catch (Exception e){
             throw new IllegalStateException("파일을 저장하지 못했습니다.");
         }
+    }
+    public String renameFile(MultipartFile multipartFile){
+        UUID uuid = UUID.randomUUID();
+        String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
 
+        String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
+
+
+        return saveFileNm;
+    }
+
+    public void updateImg(MultipartFile multipartFile, MemberImg memberImg){
+        String oriName = memberImg.getFileName();
+        String oriUrl = memberImg.getUrl();
+
+        if(oriName == null || oriUrl == null){
+            oriName = renameFile(multipartFile);
+            oriUrl = "/image/members"+"/"+oriName; //db url
+        }
+
+        //상품 이미지 저장.
+        memberImg.updateImg(oriName, oriUrl);
+        memberImgRepository.save(memberImg);
+
+        //파일저장
+        try{
+            fileService.uploadFile(multipartFile, oriName, oriUrl);
+        }catch (Exception e){
+            throw new IllegalStateException("파일을 저장하지 못했습니다.");
+        }
 
     }
+
 
 }
