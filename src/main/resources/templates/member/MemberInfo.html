@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:object="${member}">
+<head th:object="${memberFormDto}">
     <meta charset="UTF-8">
     <title th:text="|*{name} 페이지|">마이페이지</title>
 
@@ -44,7 +44,7 @@
 
     <!--https://www.codeply.com/p/WGCqYEiPBg-->
 </head>
-<body th:object="${member}" style="background-color: snow">
+<body th:object="${memberFormDto}" style="background-color: snow">
 <div class="container-fluid" >
     <div class="row flex-nowrap" >
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 " style="background-color: grey; position: fixed">
@@ -164,7 +164,7 @@
                         </div>
                         <div style="float: right; margin-top: 20px;">
                             <div style="display: inline-block">
-                                <button type="button" class="btn btn-outline-warning" th:onclick="|location.href='@{/members/update/{id}(id=${member.id})}'|">
+                                <button type="button" class="btn btn-outline-warning" th:onclick="|location.href='@{/members/update/{id}(id=${memberFormDto.id})}'|">
                                     정보 수정
                                 </button>
                             </div>

@@ -7,14 +7,9 @@ import com.travel.busan.repository.MemberImgRepository;
 import com.travel.busan.repository.MemberRepository;
 import com.travel.busan.service.MemberImgService;
 import com.travel.busan.service.MemberService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.security.Principal;
 
 
 @Controller
@@ -90,17 +83,18 @@ public class MemberController {
 
     //memberInfo mapping
     @GetMapping("/memberInfo")
-    public String infoView(@AuthenticationPrincipal Member member,Model model) throws Exception{
+    public String infoView(@AuthenticationPrincipal MemberFormDto memberFormDto, Model model) throws Exception{
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)principal;
 
         String email = ((UserDetails) principal).getUsername();
 
         Member findMember = memberRepository.findByEmail(email);
 
+        MemberFormDto findMemberFormDto = MemberFormDto.toDto(findMember);
+
         if(findMember != null){
             MemberImg findMemberImg = memberImgRepository.findByMember(findMember);
-            model.addAttribute("member", findMember);
+            model.addAttribute("memberFormDto", findMemberFormDto);
             model.addAttribute("memberImg", findMemberImg);
 
             return "member/MemberInfo";
@@ -113,20 +107,21 @@ public class MemberController {
 
     @GetMapping("/update/{id}")
     public String memberUpdateForm(@PathVariable("id")Long id, Model model){
+
         Member findMember = memberService.memberView(id);
+        MemberFormDto findMemberFormDto = MemberFormDto.toDto(findMember);
         MemberImg memberImg = memberImgRepository.findByMember(findMember);
-        model.addAttribute("member", findMember);
+        model.addAttribute("memberFormDto", findMemberFormDto);
         model.addAttribute("memberImg", memberImg);
         return "member/MemberUpdateForm";
     }
 
-    @PostMapping("/update/{id}")
-    public String memberUpdatePost(@PathVariable("id")Long id, @Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult, Model model) throws Exception{
+    @PostMapping("/update")
+
+    public String memberUpdatePost(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult, Model model) throws Exception{
         if(bindingResult.hasErrors()){
-            model.addAttribute("resultMessage", "수정 실패하였습니다.");
             return "member/MemberUpdateForm";
         }
-
         try{
             System.out.println("파일수정을 시작합니다.");
             memberService.updateMember(memberFormDto); //내용 수정.
@@ -136,7 +131,6 @@ public class MemberController {
             return "member/MemberUpdateForm";
         }
 
-        model.addAttribute("resultMessage", "수정되었습니다..");
         return "redirect:/";
     }
 }

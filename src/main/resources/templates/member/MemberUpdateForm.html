@@ -49,11 +49,6 @@
                     history.back();
                 }
             });
-
-            function showAlert(){
-                let resultMessage = [[${resultMessage}]];
-                alert(resultMessage)
-            }
         </script>
     </th:block>
 
@@ -74,9 +69,9 @@
     </th:block>
 
 </head>
-<body th:object="${member}">
+<body th:object="${memberFormDto}">
     <div class="col py-3">
-        <form th:action="@{/members/update/{id}(id=${member.id})}" method="post" role="form" enctype="multipart/form-data">
+        <form th:action="@{/members/update}" method="post" role="form" enctype="multipart/form-data">
             <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px;  border: 2px solid lightgrey; background-color: white">
                 <div class="col-4" style="width: 30%; border: 2px solid white">
                     <img id="image" class="user-img" th:if="${memberImg.getUrl() ==null}" th:src="@{/img/user.png}">
@@ -129,7 +124,7 @@
 
 
                         <div style="float:right;">
-                            <button type="submit" class="btn btn-outline-danger" onclick="showAlert()" >수정 완료</button>
+                            <button type="submit" class="btn btn-outline-danger">수정 완료</button>
                         </div>
                     </div>
                 </div>

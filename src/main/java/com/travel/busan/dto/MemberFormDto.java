@@ -1,5 +1,6 @@
 package com.travel.busan.dto;
 
+import com.travel.busan.entity.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,4 +25,15 @@ public class MemberFormDto {
     @NotBlank(message = "주소는 필수 입력값입니다.")
     private String address;
 
+    public static MemberFormDto toDto(Member member){
+        MemberFormDto memberFormDto = new MemberFormDto();
+        memberFormDto.setId(member.getId());
+        memberFormDto.setEmail(member.getEmail());
+        memberFormDto.setName(member.getName());
+        memberFormDto.setAddress(member.getAddress());
+        memberFormDto.setPassword(member.getPassword());
+        memberFormDto.setNickname(member.getNickname());
+
+        return memberFormDto;
+    }
 }

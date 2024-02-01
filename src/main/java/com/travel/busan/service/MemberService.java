@@ -40,7 +40,6 @@ public class MemberService implements UserDetailsService {
         if(om.isPresent()){
             Member findMember = om.get();
             //내용 update
-
             findMember.updateMember(memberFormDto.getEmail(), memberFormDto.getPassword(),memberFormDto.getName(), memberFormDto.getNickname(), memberFormDto. getAddress());
             memberRepository.save(findMember);
 
