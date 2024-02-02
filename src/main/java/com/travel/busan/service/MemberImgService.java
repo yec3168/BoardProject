@@ -29,10 +29,17 @@ public class MemberImgService {
     @Transactional
     public void upload(MemberImg memberImg, MultipartFile multipartFile, Member saveMember){
         // 파일 이름, url 재설정.
+        String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
+        if(oriFileNm.isEmpty()) {
+            memberImg.setMember(saveMember);
+            memberImg.setFileName("user.png");
+            memberImg.setUrl("/image/members/user.png");
+            memberImgRepository.save(memberImg);
+            return;
+        }
+        String saveFileNm = renameFile(multipartFile, oriFileNm);
 
-        String saveFileNm = renameFile(multipartFile);
-
-        String saveUrl = "/image/members"+"/"+saveFileNm; //db url
+        String saveUrl = "/image/members/"+saveFileNm; //db url
         String checkFolder = uploadImage +"/members"; //mk dir
         String uploadUrl = checkFolder+"/"+saveFileNm; //file save
 
@@ -48,32 +55,30 @@ public class MemberImgService {
             throw new IllegalStateException("파일을 저장하지 못했습니다.");
         }
     }
-    public String renameFile(MultipartFile multipartFile){
+    public String renameFile(MultipartFile multipartFile, String oriFileNm){
         UUID uuid = UUID.randomUUID();
-        String oriFileNm = multipartFile.getOriginalFilename(); // 실제파일이름
-
-        String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf(".")) ;// .후 제거
-
-
+        String saveFileNm = uuid.toString()+oriFileNm.substring(oriFileNm.lastIndexOf("."));
         return saveFileNm;
     }
 
     public void updateImg(MultipartFile multipartFile, MemberImg memberImg){
-        String oriName = memberImg.getFileName();
-        String oriUrl = memberImg.getUrl();
 
-        if(oriName == null || oriUrl == null){
-            oriName = renameFile(multipartFile);
-            oriUrl = "/image/members"+"/"+oriName; //db url
+        String oriName = memberImg.getFileName();;
+        String oriUrl= memberImg.getUrl();
+
+        if(oriName.equals("user.png")){
+            oriName = renameFile(multipartFile, oriName);
+            oriUrl = "/image/members/"+oriName;
         }
 
         //상품 이미지 저장.
         memberImg.updateImg(oriName, oriUrl);
+        String checkFolder = uploadImage +"/members"; //mk dir
         memberImgRepository.save(memberImg);
 
         //파일저장
         try{
-            fileService.uploadFile(multipartFile, oriName, oriUrl);
+            fileService.uploadFile(multipartFile, checkFolder, oriUrl);
         }catch (Exception e){
             throw new IllegalStateException("파일을 저장하지 못했습니다.");
         }

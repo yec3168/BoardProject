@@ -56,23 +56,14 @@
                     history.back();
                 }
             });
+
         </script>
     </th:block>
 
     <th:block>
         <style>
-            .py-3{
-                width: 80%;
-                margin: 0 auto;
-                height: 100%;
-
-            }
-            .user-img{
-                width: 300px;
-                height: 400px;
-            }
             .container{
-                margin-left: 350px;
+                margin-left: 200px;
                 margin-bottom: 100px;
 
                 border: 1px solid lightgrey;
@@ -86,7 +77,7 @@
 
 </head>
 <body th:object="${memberFormDto}">
-    <h1 style="margin-left: 350px; margin-top: 80px">회원정보 수정</h1>
+    <h1 style="margin-left: 200px; margin-top: 80px">회원정보 수정</h1>
     <div class="container">
 
         <form th:action="@{/members/update/{id}(id=${memberFormDto.id})}" method="post" role="form" enctype="multipart/form-data">
@@ -130,29 +121,10 @@
                 </div>
             </div>
 
-            <div class="row g-2">
-                <div class="col-4" style="width: 30%; border: 2px solid white; margin-left: 100px">
-                    <img id="image" class="user-img" th:if="*{memberImg.getUrl() ==null}" th:src="@{/img/user.png}">
-                    <img id="image2" class="user-img" th:if="*{memberImg.getUrl() !=null}" th:src="@{${memberFormDto.memberImg.getUrl()}}">
-                </div>
-                <div  class="col-5" style="margin-left: 50px; margin-top: 100px">
-                    <div class="image-text" >
-                        <h4>파일을 선택해주세요.</h4>
-                        <p style="color:lightgrey;">JPG, JPEG, PNG 파일을 넣어주세요..</p>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input name="memberImgFile" type="file" class="form-control" onchange="setImage(this)">
-                        </div>
-                        <div class="col">
-                            <button  type="button" class="btn btn-outline-danger" th:if="${memberFormDto.memberImg.getUrl() !=null}" th:field="${memberImg}" value="이미지 삭제" onclick="initImage()">이미지 삭제</button>
-                        </div>
-                       </div>
-                </div>
-            </div>
+
 
             <div style="text-align: right">
-                <button type="submit" class="btn btn-outline-danger" style="">수정완료</button>
+                <button type="submit" class="btn btn-outline-danger">수정완료</button>
             </div>
 
         </form>

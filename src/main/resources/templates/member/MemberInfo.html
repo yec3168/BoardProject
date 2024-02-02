@@ -35,7 +35,7 @@
         }
         .user-img{
             width: 300px;
-            height: 400px;
+            height: 350px;
             object-fit:cover
         }
 
@@ -79,22 +79,10 @@
                 <hr>
                 <div class="dropdown pb-4">
                     <span class="ms-1 d-none d-sm-inline" style="color:black;">Made by.</span>
-                    <div class="row">
-
-                        <div class="col" style="float: left">
-                            <a href="http://www.github.com/yec3168" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi bi-github"></i>
-                                <span class="ms-1 d-none d-sm-inline" style="font-size: 14px">yec3168</span>
-                            </a>
-                        </div>
-                        <div class="col" style="display: inline-block">
-                            <a href="https://github.com/JH22222" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi bi-github"></i>
-                                <span class="ms-1 d-none d-sm-inline" style="font-size: 14px">jh22222</span>
-                            </a>
-                        </div>
-                    </div>
-
+                    <a href="http://www.github.com/yec3168" class="nav-link px-0 align-middle">
+                        <i class="fs-4 bi bi-github"></i>
+                        <span class="ms-1 d-none d-sm-inline" style="font-size: 14px">yec3168</span>
+                    </a>
                 </div>
 
                 <div class="dropdown pb-4" >
@@ -119,9 +107,16 @@
             <h3 th:text="|*{name} Profile|"></h3>
             <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px;border: 1px solid lightgrey; background-color: white">
                 <div class="col-4" style="width: 30%; border: 2px solid white">
-                    <img class="user-img" th:if="${memberImg.getUrl() ==null}" src="/img/user.png">
-                    <img class="user-img" th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}">
-                </div>
+                    <div class="row">
+                        <img class="user-img" th:if="${memberImg.getUrl() ==null}" src="/img/user.png">
+                        <img class="user-img" th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}">
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-warning" th:onclick="|location.href='@{/members/update/image/{id}(id=${memberFormDto.id})}'|">
+                            이미지 수정
+                        </button>
+                    </div>
+                    </div>
                 <div class="col-8" style="width: 70%">
                     <div class="info" style="margin: 10px auto">
                         <div class="row" >

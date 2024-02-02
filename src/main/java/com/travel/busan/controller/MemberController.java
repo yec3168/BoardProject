@@ -19,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/members")
@@ -118,16 +120,13 @@ public class MemberController {
     }
 
     @PostMapping("/update/{id}")
-
-    public String memberUpdatePost(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult,
-                                   @RequestParam("memberImgFile") MultipartFile multipartFile ,Model model) throws Exception{
+    public String memberUpdatePost(@Valid @ModelAttribute MemberFormDto memberFormDto, BindingResult bindingResult
+                                   ,Model model) throws Exception{
         if(bindingResult.hasErrors()){
+            model.addAttribute("result", "다시 입력해주세요.");
             return "member/MemberUpdateForm";
         }
         try{
-            System.out.println("파일수정을 시작합니다.");
-            memberImgService.updateImg(multipartFile, memberRepository.findByEmail(memberFormDto.getEmail()).getMemberImg());
-
             memberService.updateMember(memberFormDto); //내용 수정.
 
         }catch (IllegalStateException e){
@@ -135,6 +134,34 @@ public class MemberController {
             return "member/MemberUpdateForm";
         }
 
-        return "redirect:/";
+        model.addAttribute("result", "수정되었습니다.");
+        return "redirect:/members/memberInfo";
     }
+    @GetMapping("/update/image/{id}")
+    public String memberImgUpdateGet(@PathVariable("id")Long id, Model model){
+        Member findMember = memberService.memberView(id);
+        MemberImg memberImg = memberImgRepository.findByMember(findMember);
+
+        model.addAttribute("memberImg", memberImg);
+        return "member/MemberImgUpdate";
+    }
+    @PostMapping("/update/image/{id}")
+    public String memberImgUpdatePost(@ModelAttribute MemberImg memberImg, @RequestParam("memberImgFile") MultipartFile multipartFile,
+                                      Model model){
+        try{
+            Optional<MemberImg> op = memberImgRepository.findById(memberImg.getId());
+            if(op.isPresent()){
+
+                MemberImg findMemberImg =op.get();
+                memberImgService.updateImg(multipartFile, findMemberImg);
+            }
+
+        }catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/MemberImgUpdate";
+        }
+        return "redirect:/members/memberInfo";
+    }
+
+
 }
