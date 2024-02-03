@@ -165,7 +165,7 @@ public class MemberController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteMember(@ModelAttribute MemberFormDto memberFormDto, Model model ){
+    public String deleteMember(@ModelAttribute MemberFormDto memberFormDto){
         Optional<Member> op = memberRepository.findById(memberFormDto.getId());
         if(op.isPresent()){
             Member findMember = op.get();
@@ -175,7 +175,7 @@ public class MemberController {
             memberImgRepository.delete(findMemberImg);
         }
 
-        return "redirect:/";
+        return "redirect:/members/logout";
     }
 
 
