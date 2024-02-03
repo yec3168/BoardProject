@@ -62,6 +62,9 @@ public class MemberImgService {
     }
 
     public void updateImg(MultipartFile multipartFile, MemberImg memberImg){
+        if(multipartFile.isEmpty()){
+            return;
+        }
 
         String oriName = memberImg.getFileName();;
         String oriUrl= memberImg.getUrl();
@@ -70,19 +73,29 @@ public class MemberImgService {
             oriName = renameFile(multipartFile, oriName);
             oriUrl = "/image/members/"+oriName;
         }
+        System.out.println("oriName   " + oriName);
+        System.out.println("oriUrl    "+ oriUrl);
+
 
         //상품 이미지 저장.
         memberImg.updateImg(oriName, oriUrl);
         String checkFolder = uploadImage +"/members"; //mk dir
+        String uploadUrl = checkFolder+"/"+oriName;
         memberImgRepository.save(memberImg);
 
         //파일저장
         try{
-            fileService.uploadFile(multipartFile, checkFolder, oriUrl);
+            fileService.uploadFile(multipartFile, checkFolder, uploadUrl);
         }catch (Exception e){
             throw new IllegalStateException("파일을 저장하지 못했습니다.");
         }
 
+    }
+
+    public void deleteImg(MemberImg memberImg){
+        memberImg.setFileName("user.png");
+        memberImg.setUrl("/image/members/user.png");
+        memberImgRepository.save(memberImg);
     }
 
 

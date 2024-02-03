@@ -148,6 +148,7 @@ public class MemberController {
     @PostMapping("/update/image/{id}")
     public String memberImgUpdatePost(@ModelAttribute MemberImg memberImg, @RequestParam("memberImgFile") MultipartFile multipartFile,
                                       Model model){
+
         try{
             Optional<MemberImg> op = memberImgRepository.findById(memberImg.getId());
             if(op.isPresent()){
@@ -161,6 +162,20 @@ public class MemberController {
             return "member/MemberImgUpdate";
         }
         return "redirect:/members/memberInfo";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteMember(@ModelAttribute MemberFormDto memberFormDto, Model model ){
+        Optional<Member> op = memberRepository.findById(memberFormDto.getId());
+        if(op.isPresent()){
+            Member findMember = op.get();
+            MemberImg findMemberImg = memberImgRepository.findByMember(findMember);
+
+            memberRepository.delete(findMember);
+            memberImgRepository.delete(findMemberImg);
+        }
+
+        return "redirect:/";
     }
 
 

@@ -36,11 +36,12 @@
                 let result = document.getElementsByTagName("img");
 
                 if (result.namedItem("image") !=null) {
-                    document.getElementById("image").src = "/img/user.png";
+                    document.getElementById("image").src = "/image/members/user.png";
                 }
                 else if(result.namedItem("image2") !=null) {
-                    document.getElementById("image2").src ="/img/user.png";
+                    document.getElementById("image2").src ="/image/members/user.png";
                 }
+
                 alert("이미지가 삭제되었습니다.");
             };
 
@@ -54,8 +55,7 @@
                 height: 300px;
             }
             .container{
-                margin-left: 200px;
-                margin-bottom: 100px;
+                marign:0 auto;
 
                 border: 1px solid lightgrey;
                 box-shadow: 3px 3px 3px;
@@ -84,7 +84,7 @@
                         <input name="memberImgFile" type="file" class="form-control" onchange="setImage(this)">
                     </div>
                     <div class="col">
-                        <button  type="button" class="btn btn-outline-danger"  onclick="initImage()">이미지 삭제</button>
+                        <input name="memberImgDelete" type="button" class="form-control" value="이미지 삭제"  onclick="initImage()"></input>
                     </div>
                 </div>
             </div>

@@ -87,8 +87,7 @@
 
                 <div class="dropdown pb-4" >
                     <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img th:if="${memberImg.getUrl() ==null}" src="/img/user.png" width="30" height="30" class="rounded-circle">
-                        <img th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}" width="30" height="30" class="rounded-circle">
+                        <img th:src="@{${memberImg.url}}" width="30" height="30" class="rounded-circle">
                         <span class="d-none d-sm-inline mx-1" th:text="*{name}"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
@@ -108,8 +107,7 @@
             <div class="row" style="margin: 20px auto; box-shadow: 3px 3px 3px;border: 1px solid lightgrey; background-color: white">
                 <div class="col-4" style="width: 30%; border: 2px solid white">
                     <div class="row">
-                        <img class="user-img" th:if="${memberImg.getUrl() ==null}" src="/img/user.png">
-                        <img class="user-img" th:if="${memberImg.getUrl() !=null}" th:src="@{${memberImg.getUrl()}}">
+                        <img class="user-img" th:src="@{${memberImg.url}}">
                     </div>
                     <div class="row">
                         <button type="button" class="btn btn-outline-warning" th:onclick="|location.href='@{/members/update/image/{id}(id=${memberFormDto.id})}'|">
@@ -164,7 +162,7 @@
                                 </button>
                             </div>
                             <div style="display: inline-block">
-                                <button type="button" class="btn btn-outline-danger" onclick="location.href='/members/delete'">
+                                <button type="button" class="btn btn-outline-danger" th:onclick="|location.href='@{/members/delete/{id}(id=${memberFormDto.id})}'|">
                                     회원 탈퇴
                                 </button>
                             </div>
