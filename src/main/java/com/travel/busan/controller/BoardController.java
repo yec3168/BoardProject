@@ -15,4 +15,14 @@ public class BoardController {
     }
 
 
+    @GetMapping("/")
+    public String boardHome(Model model){
+
+
+        return "board/BoardList";
+    }
+
+
+
+
 }

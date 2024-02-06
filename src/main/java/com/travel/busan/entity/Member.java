@@ -11,7 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,8 +41,13 @@ public class Member {
 
     private String address;
 
+    private LocalDateTime createDate;
+
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private MemberImg  memberImg;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Board> boardList = new ArrayList<>();
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
@@ -50,6 +58,8 @@ public class Member {
         member.setNickname(memberFormDto.getNickname());
         member.setAddress(memberFormDto.getAddress());
         member.setRoleStatus(RoleStatus.ADMIN);
+        member.setCreateDate(LocalDateTime.now());
+
         return member;
     }
     public void updateMember(String email, String password, String name, String nickname, String address){

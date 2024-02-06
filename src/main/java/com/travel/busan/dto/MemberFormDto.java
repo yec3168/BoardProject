@@ -1,10 +1,17 @@
 package com.travel.busan.dto;
 
+import com.travel.busan.entity.Board;
 import com.travel.busan.entity.Member;
 import com.travel.busan.entity.MemberImg;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class MemberFormDto {
@@ -27,6 +34,10 @@ public class MemberFormDto {
     private String address;
 
     private MemberImg memberImg;
+
+    private LocalDateTime createDate;
+    
+    private List<Board> boardList = new ArrayList<>(); // 작성한 자유게시판 목록
 
     public static MemberFormDto toDto(Member member){
         MemberFormDto memberFormDto = new MemberFormDto();
