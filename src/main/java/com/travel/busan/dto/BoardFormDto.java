@@ -20,7 +20,7 @@ public class BoardFormDto {
     @NotEmpty(message = "내용은 필수 입력값입니다.")
     private String content;
 
-    private Member member; // 작성자
+    private Member writer; // 작성자
 
     private LocalDateTime createDate;
 

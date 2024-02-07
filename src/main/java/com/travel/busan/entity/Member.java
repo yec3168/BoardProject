@@ -46,7 +46,7 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private MemberImg  memberImg;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
