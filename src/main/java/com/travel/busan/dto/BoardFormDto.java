@@ -26,6 +26,8 @@ public class BoardFormDto {
 
     private Member writer; // 작성자
 
+    private int view; // 조회수
+
     private List<Answer> answerList = new ArrayList<>();
 
     private LocalDateTime createDate;
@@ -41,6 +43,7 @@ public class BoardFormDto {
         boardFormDto.setCreateDate(board.getCreateDate());
         boardFormDto.setUpdateDate(board.getUpdateDate());
         boardFormDto.setAnswerList(board.getAnswer());
+        boardFormDto.setView(board.getView());
 
 
         return boardFormDto;

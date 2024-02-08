@@ -73,6 +73,8 @@ public class BoardController {
     public String detailPage(@PathVariable("id")Long id, Model model)throws Exception{
         try {
             BoardFormDto boardFormDto = boardService.findBoardDTO(id);
+            Board board = boardService.findBoard(id);
+            boardService.viewCount(board);
             model.addAttribute("boardFormDto", boardFormDto);
         }catch (Exception e){
             model.addAttribute("errorMessage", e.getMessage());

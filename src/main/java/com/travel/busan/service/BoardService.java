@@ -54,7 +54,10 @@ public class BoardService {
             throw new IllegalStateException("존재하지않는 게시물입니다.");
         }
     }
-
+    public void viewCount(Board board){
+        board.setView(board.getView()+1);
+        boardRepository.save(board);
+    }
     public void updateBoard(Board board, BoardFormDto boardFormDto){
         board.updateBoard(boardFormDto.getContent());
         boardRepository.save(board);

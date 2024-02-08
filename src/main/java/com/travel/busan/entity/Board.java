@@ -31,12 +31,15 @@ public class Board {
 
     private LocalDateTime updateDate;
 
+    private int view; // 조회수
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member writer; // 작성자
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Answer> answer;
+
 
     public static Board createBoard(BoardFormDto boardFormDto, Member member){
         Board board = new Board();
@@ -45,6 +48,7 @@ public class Board {
         board.setCreateDate(LocalDateTime.now());
         board.setUpdateDate(LocalDateTime.now());
         board.setWriter(member);
+        board.setView(boardFormDto.getView());
 
         return board;
     }
