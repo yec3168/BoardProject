@@ -9,6 +9,7 @@ import lombok.Setter;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +35,9 @@ public class Board {
     @JoinColumn(name = "member_id")
     private Member writer; // 작성자
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Answer> answer;
+
     public static Board createBoard(BoardFormDto boardFormDto, Member member){
         Board board = new Board();
         board.setSubject(boardFormDto.getSubject());
@@ -44,4 +48,5 @@ public class Board {
 
         return board;
     }
+
 }

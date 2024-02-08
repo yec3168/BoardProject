@@ -49,6 +49,9 @@ public class Member {
     @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Answer> answer;
+
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
         member.setEmail(memberFormDto.getEmail());
@@ -69,5 +72,7 @@ public class Member {
         this.nickname = nickname;
         this.address = address;
     }
+
+
 
 }

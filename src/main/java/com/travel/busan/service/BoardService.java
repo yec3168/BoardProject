@@ -13,8 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.PanelUI;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,17 @@ public class BoardService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    public BoardFormDto findBoard(Long id) throws Exception{
+        Optional<Board> op= boardRepository.findById(id);
+        if(op.isPresent()){
+            BoardFormDto boardFormDto = BoardFormDto.toDto(op.get());
+            return boardFormDto;
+        }
+        else{
+            throw new IllegalStateException("작성한 게시물이 존재하지 않습니다.");
+        }
+    }
 
     public void createBoard(BoardFormDto boardFormDto, String email){
         Member findMember = memberRepository.findByEmail(email);
