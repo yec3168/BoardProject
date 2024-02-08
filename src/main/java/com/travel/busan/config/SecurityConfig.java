@@ -38,6 +38,15 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
         );
 
+        http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/","/members/login","/members/new",
+                        "/board/list","/css/**","/image/membres/**","/js/**").permitAll()
+                .requestMatchers("/board/new", "/members/memberinfo").authenticated()
+                .anyRequest().authenticated()
+
+
+        );
+
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

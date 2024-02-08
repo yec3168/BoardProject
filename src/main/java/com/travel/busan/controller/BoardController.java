@@ -10,6 +10,7 @@ import com.travel.busan.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,8 +57,9 @@ public class BoardController {
         return "redirect:/board/list";
     }
     @GetMapping("/list")
-    public String boardHome(Model model){
-
+    public String boardList(Model model, @RequestParam(value = "page", defaultValue = "0")int page){
+        Page<Board> paging = boardService.getList(page);
+        model.addAttribute("paging", paging);
         return "board/BoardList";
     }
 
