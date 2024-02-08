@@ -49,4 +49,9 @@ public class Board {
         return board;
     }
 
+    public void updateBoard(String content){
+        this.content = content;
+        this.updateDate = LocalDateTime.now();
+    }
+
 }

@@ -28,7 +28,7 @@ public class BoardService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public BoardFormDto findBoard(Long id) throws Exception{
+    public BoardFormDto findBoardDTO(Long id) throws Exception{
         Optional<Board> op= boardRepository.findById(id);
         if(op.isPresent()){
             BoardFormDto boardFormDto = BoardFormDto.toDto(op.get());
@@ -44,7 +44,21 @@ public class BoardService {
         Board board = Board.createBoard(boardFormDto, findMember);
         boardRepository.save(board);
     }
+    public  Board findBoard(Long id) throws Exception{
+        Optional<Board> op= boardRepository.findById(id);
 
+        if(op.isPresent()) {
+            return op.get();
+        }
+        else {
+            throw new IllegalStateException("존재하지않는 게시물입니다.");
+        }
+    }
+
+    public void updateBoard(Board board, BoardFormDto boardFormDto){
+        board.updateBoard(boardFormDto.getContent());
+        boardRepository.save(board);
+    }
     public Page<Board> getList(int page){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));

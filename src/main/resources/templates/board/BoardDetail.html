@@ -16,9 +16,7 @@
           <a class="btn btn-default"  style="border: 1px solid black" th:href="@{/board/list}">목록으로</a>
       </div>
 
-      <div  style="float:right;">
-          <button type="submit" class="btn btn-outline-danger" th:onclick="|location.href='@{/board/delete/{id}(id=${boardFormDto.id})}'|">삭제</button>
-      </div>
+
       <div  style="float:right;">
           <button type="submit" class="btn btn-outline-warning" th:onclick="|location.href='@{/board/update/{id}(id=${boardFormDto.id})}'|">수정</button>
       </div>

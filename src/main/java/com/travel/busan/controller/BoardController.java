@@ -72,7 +72,7 @@ public class BoardController {
     @GetMapping("/detail/{id}")
     public String detailPage(@PathVariable("id")Long id, Model model)throws Exception{
         try {
-            BoardFormDto boardFormDto = boardService.findBoard(id);
+            BoardFormDto boardFormDto = boardService.findBoardDTO(id);
             model.addAttribute("boardFormDto", boardFormDto);
         }catch (Exception e){
             model.addAttribute("errorMessage", e.getMessage());
@@ -93,6 +93,44 @@ public class BoardController {
             model.addAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/board/detail/"+id;
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateBoard(@PathVariable("id") Long id, Principal principal,
+                              Model model)throws Exception {
+        try {
+            BoardFormDto boardFormDto = boardService.findBoardDTO(id);
+            model.addAttribute("boardFormDto", boardFormDto);
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "board/BoardUpdateForm";
+    }
+    @PostMapping("/update/{id}")
+    public String updateBoardPost(@Valid @ModelAttribute BoardFormDto boardFormDto,
+                                  BindingResult bindingResult
+                                  ,@PathVariable("id")Long id, Model model){
+        if(bindingResult.hasErrors()){
+            return "board/BoardForm";
+        }
+        try{
+            Board board = boardService.findBoard(id);
+            boardService.updateBoard(board, boardFormDto);
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/board/list";
+    }
+    @GetMapping("/delete/{id}")
+    public String deleteBoard(@PathVariable("id") Long id, Model model)throws Exception{
+        try {
+            Board board =boardService.findBoard(id);
+            boardRepository.delete(board);
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/board/list";
     }
 
     //@GetMapping("/asd")
