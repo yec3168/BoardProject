@@ -1,4 +1,4 @@
-# BusanTravel
+# BoardProject
 IDE : Intellij   
 Springboot : 3.2.0    
 DB : MariaDB  
