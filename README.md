@@ -12,7 +12,7 @@ Dependency : JPA, Lombok, devtools, web, security, validation
 2024-01-17 ~ 2024-02-08
   
 # ERD
-![image](https://github.com/yec3168/BoardProject/assets/85733545/980802ff-cabc-402a-8e55-9a94f2f94ba4)
+![image](https://github.com/yec3168/BoardProject/assets/85733545/877ec32a-e325-4f5f-a77c-7ea9b3cbdb35)
 
 
 
