@@ -12,7 +12,8 @@ Dependency : JPA, Lombok, devtools, web, security, validation
 2024-01-17 ~ 2024-02-08
   
 # ERD
-![20240209_163816](https://github.com/yec3168/BusanTravel/assets/85733545/225af34e-fa90-413d-bbea-81501bd8e576)
+![image](https://github.com/yec3168/BoardProject/assets/85733545/980802ff-cabc-402a-8e55-9a94f2f94ba4)
+
 
 
 
